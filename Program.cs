@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Dynamic;   //Importerar system som t ex Console.WriteLine
 
 //Skapar en klass för gästbokinlägg
 class GuestbookPost
@@ -64,7 +63,7 @@ class Guestbook
         //Loopar igenom alla inlägg och skriver ut alla inlägg med index.
         for (int i = 0; i < posts.Count; i++)
         {
-            Console.WriteLine($"{i} {posts[i].Owner} - {posts[i].Text}");
+            Console.WriteLine($"[{i}] {posts[i].Owner} - {posts[i].Text}");
         }
     }
 
@@ -74,6 +73,20 @@ class Guestbook
     {
         //Lägg till i listan posts med inbyggd metod för listor Add()
         posts.Add(post);
+    }
+
+    //Metod som raderar inlägg baserat på index.
+    public void RemovePost(int index)
+    {
+        //Kontrollera att index finns.
+        if (index >= 0 && index < posts.Count)
+        {
+            posts.RemoveAt(index);      //Inbyggd funktion som tar bort index från lista.
+        }
+        else
+        {
+            Console.WriteLine("Ogiltigt index.");
+        }
     }
 
 }
@@ -86,17 +99,54 @@ class Program
     {
         //Skapa gästboken som inläggen ska adderas till. En instans av Guestbook.
         Guestbook gb = new Guestbook();
+        string choice;      //Deklarerar en variabel(textsträng) som lagrar menyval. 
 
-        //Skapa nya inlägg (objekt) av klassen GuestbookPost. Anropar konstruktorn i GuestbookPost som kör koden för att skapa ett nytt objekt.
-        GuestbookPost post1 = new GuestbookPost("Frida", "Hello World!");
-        GuestbookPost post2 = new GuestbookPost("Hanna", "Testmeddelande.");
+        //En loop som rensar konsollen och skriver ut alla alternativ så länge man inte väljer x - avsluta.
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("F R I D A'S G U E S T B O O K");
+            Console.WriteLine();
+            Console.WriteLine("1. Skriv i gästboken");
+            Console.WriteLine("2. Ta bort inlägg");
+            Console.WriteLine("x. Avsluta");
+            Console.WriteLine();
+            //Läs ut alla inlägg
+            gb.ShowAllPosts();
 
-        //Addera inlägg i gästboken med addera-metoden.
-        gb.AddPost(post1);
-        gb.AddPost(post2);
+            //Läser in användarens svar av choice.
+            choice = Console.ReadLine();
 
-        //Skriv ut inläggen med metoden för utskrift
-        gb.ShowAllPosts();
-       
+            //De olika valen och vad dem gör, vid valt alterantiv så bryts den.
+            switch (choice)
+            {
+                //Lägg till nytt inlägg
+                case "1":
+                    try
+                    {
+                        Console.Write("Ägare: ");
+                        string owner = Console.ReadLine();
+
+                        Console.Write("Inlägg: ");
+                        string text = Console.ReadLine();
+
+                        GuestbookPost post = new GuestbookPost(owner, text);
+                        gb.AddPost(post);
+                    }
+                    //Fel vi vill fånga och variabel(ex) som refererar till felobjektet.
+                    catch (ArgumentException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.ReadKey();          //Pausa så att använda kan läsa meddelandet.
+                    }
+                    break;
+
+                //Ta bort inlägg
+                case "2":
+
+                    break;
+            }
+        } while (choice.ToLower() != "x");      //Case sensitive
+
     }
 }
