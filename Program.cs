@@ -13,6 +13,11 @@ namespace GuestbookApp
             string choice;      //Deklarerar en variabel(textsträng) som lagrar menyval.
             string input;       //Deklarera en variabel som lagrar index-input vid radering.
 
+            string file = "guestbook.json";     //Skapar en variabel file som innehåller filnamnet. Den skickas sedan som argument till LoadFromFile och SaveToFile.
+
+            //Metoden tar emot värdet "guestbook.json" via parametern filename och läser in listan med inlägg från den filen.
+            gb.LoadFromFile(file);
+
             //En loop som rensar konsollen och skriver ut alla alternativ så länge man inte väljer x - avsluta.
             do
             {
@@ -26,7 +31,7 @@ namespace GuestbookApp
                 //Läs ut alla inlägg
                 gb.ShowAllPosts();
 
-                //Läser in användarens svar av choice.
+                //Läser in användarens svar av choice. Ger variabeln ett värde.
                 choice = Console.ReadLine();
 
                 //De olika valen och vad dem gör, vid valt alterantiv så bryts den.
@@ -45,6 +50,9 @@ namespace GuestbookApp
 
                             GuestbookPost post = new GuestbookPost(owner, text);
                             gb.AddPost(post);
+
+                            //Spara direkt efter att ett nytt inlägg lagts till
+                            gb.SaveToFile(file);
                         }
                         //Fel vi vill fånga och variabel(ex) som refererar till felobjektet.
                         catch (ArgumentException ex)
@@ -67,6 +75,9 @@ namespace GuestbookApp
                         {
                             //Om omvandlingen lyckas så raderas index.
                             gb.RemovePost(index);
+
+                            // Spara direkt efter att ett inlägg tagits bort
+                            gb.SaveToFile(file);
                         }
                         else
                         {

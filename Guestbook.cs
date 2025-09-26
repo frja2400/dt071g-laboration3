@@ -47,6 +47,32 @@ namespace GuestbookApp
             else
             {
                 Console.WriteLine("Ogiltigt index.");
+                Console.ReadKey();
+            }
+        }
+
+        //Metod för att spara listan posts till en fil.
+        public void SaveToFile(string filename)
+        {
+            //Konvertera listan till JSON med inbyggd metod. WriteIndented ger JSON-strängen radbrtningar. Vi sparar det i variabeln jsonString som är en sträng.
+            string jsonString = JsonSerializer.Serialize(posts, new JsonSerializerOptions { WriteIndented = true });
+
+            //Skriver JSON-strängen till en fil filename.
+            File.WriteAllText(filename, jsonString);
+
+        }
+
+        //Metod för att läsa in listan från filen och fylla listan posts.
+        public void LoadFromFile(string filename)
+        {
+
+            if (File.Exists(filename))
+            {
+                //Läser innehållet i JSON-strängen som en textsträng och sparar i variabel.
+                string jsonString = File.ReadAllText(filename);
+
+                //Omvandlar JSON till listan med GuestbookPost-objekt. Om den är ogiltig skickas en tom lista istället för null. 
+                posts = JsonSerializer.Deserialize<List<GuestbookPost>>(jsonString) ?? new List<GuestbookPost>();
             }
         }
     }
