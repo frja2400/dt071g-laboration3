@@ -32,7 +32,7 @@ namespace GuestbookApp
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Du måste fylla i inlägget.");
+                    throw new ArgumentException("Du måste fylla i inlägg.");
                 text = value;
             }
         }

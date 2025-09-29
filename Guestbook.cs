@@ -57,7 +57,7 @@ namespace GuestbookApp
             //Konvertera listan till JSON med inbyggd metod. WriteIndented ger JSON-strängen radbrtningar. Vi sparar det i variabeln jsonString som är en sträng.
             string jsonString = JsonSerializer.Serialize(posts, new JsonSerializerOptions { WriteIndented = true });
 
-            //Skriver JSON-strängen till en fil filename.
+            //Skriver JSON-strängen till en fil filename. Filename är path och jsonString vilken text(json).
             File.WriteAllText(filename, jsonString);
 
         }
